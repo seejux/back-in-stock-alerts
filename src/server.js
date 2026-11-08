@@ -95,6 +95,7 @@ const server = http.createServer(async (req, res) => {
     if (r === 'GET /admin') return await admin(req, res, url);
     if (r === 'GET /healthz') return send(res, 200, { ok: true });
     if (r === 'GET /') { res.writeHead(302, { Location: '/embed' }); return res.end(); }
+    console.log(`404 ${req.method} ${req.url}`);
     send(res, 404, { error: 'not found' });
   } catch (e) { console.error(e); if (!res.headersSent) send(res, 500, { error: 'internal error' }); }
 });
