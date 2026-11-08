@@ -1,0 +1,1 @@
+{"name":"back-in-stock","version":"1.0.0","private":true,"type":"module","scripts":{"start":"node --no-warnings --env-file-if-exists=.env src/server.js"},"engines":{"node":">=24"}}
