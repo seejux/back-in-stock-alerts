@@ -59,7 +59,9 @@ async function webhook(req, res) {
   const sku = typeof b.sku === 'string' && SKU.test(b.sku) ? b.sku : null;
   if (!eventId || !sku) return send(res, 400, { error: 'event_id and sku required' });
   // Atomic dedupe: only the first delivery of an event_id inserts.
-  if (insEvt.run(eventId, sku).changes === 0) return send(res, 200, { ok: true, duplicate: true });
+  const fresh = insEvt.run(eventId, sku).changes === 1;
+  console.log(`webhook event=${eventId} sku=${sku} qty=${b.quantity} ${fresh ? 'new' : 'duplicate'}`);
+  if (!fresh) return send(res, 200, { ok: true, duplicate: true });
   try {
     await processSku(sku); // verifies real stock before any email
     send(res, 200, { ok: true });
